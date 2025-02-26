@@ -4,31 +4,52 @@
  */
 
 `default_nettype none
+`timescale 1ns / 1ps
 
-module tt_um_project (
-    input  wire [7:0] ui_in,   // 8-bit input A
-    input  wire [7:0] uio_in,  // 8-bit input B
-    output wire [7:0] uo_out,  // 8-bit output C
-    input  wire       clk,     // Clock
-    input  wire       rst_n    // Active-low reset
-);
+/* This testbench just instantiates the module and makes some convenient wires
+   that can be driven / tested by the cocotb test.py.
+*/
+module tb ();
 
-    reg [7:0] C;
-    reg [15:0] In;  // Combined input A & B
-    integer i;
+  // Dump the signals to a VCD file. You can view it with gtkwave or surfer.
+  initial begin
+    $dumpfile("tb.vcd");
+    $dumpvars(0, tb);
+    #1;
+  end
 
-    always @* begin
-        In = {ui_in, uio_in};  // Merge A and B into a single 16-bit input
-        C = 8'hF0; // Default case: No '1' found
+  // Wire up the inputs and outputs:
+  reg clk;
+  reg rst_n;
+  reg ena;
+  reg [7:0] ui_in;   // Input A
+  reg [7:0] uio_in;  // Input B
+  wire [7:0] uo_out; // Output C
+  wire [7:0] uio_out;
+  wire [7:0] uio_oe;
 
-        for (i = 15; i >= 0; i = i - 1) begin
-            if (In[i]) begin
-                C = i; // Output first detected '1' bit position
-                break;
-            end
-        end
-    end
+`ifdef GL_TEST
+  wire VPWR = 1'b1;
+  wire VGND = 1'b0;
+`endif
 
-    assign uo_out = C;
+  // Instantiate the Priority Encoder with the correct TinyTapeout name:
+  tt_um_project user_project (
+
+      // Include power ports for the Gate Level test:
+`ifdef GL_TEST
+      .VPWR(VPWR),
+      .VGND(VGND),
+`endif
+
+      .ui_in  (ui_in),    // Dedicated inputs (A)
+      .uo_out (uo_out),   // Dedicated outputs (C)
+      .uio_in (uio_in),   // IOs: Input path (B)
+      .uio_out(uio_out),  // IOs: Output path
+      .uio_oe (uio_oe),   // IOs: Enable path (active high: 0=input, 1=output)
+      .ena    (ena),      // Enable - goes high when design is selected
+      .clk    (clk),      // Clock
+      .rst_n  (rst_n)     // Active-low reset
+  );
 
 endmodule
