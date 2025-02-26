@@ -26,7 +26,7 @@ module tb ();
 `endif
 
   // Instantiate the Priority Encoder module
-  tt_um_project uut (
+  tt_um_project user_project (
 `ifdef GL_TEST
       .VPWR(VPWR),
       .VGND(VGND),
