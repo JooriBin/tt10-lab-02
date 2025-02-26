@@ -1,4 +1,4 @@
-module priority_encoder (
+module tt_um_priority_encoder (
     input [7:0] A,  // Upper 8 bits
     input [7:0] B,  // Lower 8 bits
     output reg [7:0] C // Output position of first '1' or 0xF0 if none
