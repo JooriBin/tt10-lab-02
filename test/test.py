@@ -25,4 +25,4 @@ async def test_priority_encoder(dut):
         dut.ui_in.value = a
         dut.uio_in.value = b
         await RisingEdge(dut.clk)
-        assert dut.uo_out.value == expected, f"Failed for A={bin(a)}, B={bin(b)}"
+        assert dut.uo_out.value == expected, f"Failed for A={bin(a)}, B={bin(b)}, got {bin(dut.uo_out.value)}"
