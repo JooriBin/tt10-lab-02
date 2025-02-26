@@ -12,17 +12,17 @@ async def setup_clock(dut):
 
 @cocotb.test()
 async def test_priority_encoder(dut):
-    """Test Priority Encoder (Problem 2)"""
+    """Test Priority Encoder functionality."""
     await setup_clock(dut)
 
     test_cases = [
-        ((0b00101010, 0b11110001), 0b00001011),  # First 1 at index 13
-        ((0b00000000, 0b00000001), 0b00000000),  # First 1 at index 0
-        ((0b00000000, 0b00000000), 0b11110000)   # No 1s → return 0xF0
+        ((0b00101010, 0b11110001), 0b00001101),  # First '1' at index 13
+        ((0b00000000, 0b00000001), 0b00000000),  # First '1' at index 0
+        ((0b00000000, 0b00000000), 0b11110000)   # No '1's -> return 0xF0
     ]
 
     for (a, b), expected in test_cases:
         dut.ui_in.value = a
         dut.uio_in.value = b
         await RisingEdge(dut.clk)
-        assert dut.uo_out.value == expected, f"Failed for A={bin(a)}, B={bin(b)}, got {bin(dut.uo_out.value)}"
+        assert dut.uo_out.value == expected, f"Test failed for A={bin(a)}, B={bin(b)}. Expected {bin(expected)}, got {bin(dut.uo_out.value)}"
