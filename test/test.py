@@ -16,15 +16,13 @@ async def test_priority_encoder(dut):
     await setup_clock(dut)
 
     test_cases = [
-        (0b0010101011110001, 0b00001011),  # In = 0010 1010 1111 0001 → C = 13 (0000 1011)
-        (0b0000000000000001, 0b00000000),  # In = 0000 0000 0000 0001 → C = 0
-        (0b0000000000000000, 0b11110000)   # In = 0000 0000 0000 0000 → C = 0xF0
+        ((0b00101010, 0b11110001), 0b00001011),  # First 1 at index 13
+        ((0b00000000, 0b00000001), 0b00000000),  # First 1 at index 0
+        ((0b00000000, 0b00000000), 0b11110000)   # No 1s → return 0xF0
     ]
 
-    for in_value, expected in test_cases:
-        dut.ui_in.value = in_value  # Assign test input
-        await RisingEdge(dut.clk)   # Wait for clock cycle
-        assert dut.uo_out.value == expected, f"Failed for input {bin(in_value)}"
-
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    for (a, b), expected in test_cases:
+        dut.ui_in.value = a
+        dut.uio_in.value = b
+        await RisingEdge(dut.clk)
+        assert dut.uo_out.value == expected, f"Failed for A={bin(a)}, B={bin(b)}"
