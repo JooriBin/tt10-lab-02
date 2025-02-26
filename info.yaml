@@ -1,11 +1,13 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
-  discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
-  language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  title: "Priority Encoder for TinyTapeout"
+  description: "A 16-bit priority encoder that finds the first high bit (MSB-first)."
+  author: "Khouzama"
+  discord: "Your Discord Username (Optional)"
+  language: "verilog"
+  repository: "https://github.com/JooriBin/tt10-lab-02"
+  version: "1.0"
+  license: "MIT"
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
