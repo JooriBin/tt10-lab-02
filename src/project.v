@@ -6,8 +6,8 @@
 
 module tt_um_project (
     input  wire [7:0] ui_in,   // 8-bit input A
-    output wire [7:0] uo_out,  // 8-bit output C
     input  wire [7:0] uio_in,  // 8-bit input B
+    output wire [7:0] uo_out,  // 8-bit output C
     output wire [7:0] uio_out, // Unused, set to 0
     output wire [7:0] uio_oe,  // Unused, set to 0
     input  wire       ena,     // Enable
@@ -23,10 +23,9 @@ module tt_um_project (
         In = {ui_in, uio_in};  // Merge A and B into a single 16-bit input
         C = 8'hF0; // Default case: No '1' found
 
-        // Corrected Priority Encoder Logic
         for (i = 15; i >= 0; i = i - 1) begin
             if (In[i]) begin
-                C = i[7:0]; // Store the first detected '1' position
+                C = i; // Output first detected '1' bit position
                 disable;
             end
         end
@@ -36,7 +35,7 @@ module tt_um_project (
     assign uio_out = 8'b00000000; // Not used, set to 0
     assign uio_oe  = 8'b00000000; // Not used, set to 0
 
-    // List all unused inputs to prevent warnings
-    wire _unused = &{ena, clk, rst_n, 1'b0};
+    // Handle unused inputs to prevent warnings
+    wire _unused = &{ena, clk, rst_n};
 
 endmodule
