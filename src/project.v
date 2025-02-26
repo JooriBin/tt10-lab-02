@@ -6,26 +6,29 @@
 `default_nettype none
 
 module tt_um_project (
-    input  wire [7:0] ui_in,    // Dedicated inputs
-    output wire [7:0] uo_out,   // Dedicated outputs
-    input  wire [7:0] uio_in,   // IOs: Input path
-    output wire [7:0] uio_out,  // IOs: Output path
-    output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
-    input  wire       ena,      // always 1 when the design is powered, so you can ignore it
-    input  wire       clk,      // clock
-    input  wire       rst_n     // reset_n - low to reset
+    input  wire [7:0] ui_in,   // 8-bit input A
+    input  wire [7:0] uio_in,  // 8-bit input B
+    output wire [7:0] uo_out,  // 8-bit output C
+    input  wire       clk,     // Clock
+    input  wire       rst_n    // Active-low reset
 );
 
-  wire [8:0] sum; //9 bit sum to capture carry-out
+    reg [7:0] C;
+    reg [15:0] In;  // Combined input A & B
+    integer i;
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign sum =  ui_in + uio_in; //Perform 8-bit addition
-  assign uo_out = sum [7:0]; //Perform turnication
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-    
+    always @* begin
+        In = {ui_in, uio_in};  // Merge A and B into a single 16-bit input
+        C = 8'hF0; // Default case: No '1' found
 
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+        for (i = 15; i >= 0; i = i - 1) begin
+            if (In[i]) begin
+                C = i; // Output first detected '1' bit position
+                break;
+            end
+        end
+    end
+
+    assign uo_out = C;
 
 endmodule
