@@ -6,8 +6,11 @@
 
 module tt_um_project (
     input  wire [7:0] ui_in,   // 8-bit input A
-    input  wire [7:0] uio_in,  // 8-bit input B
     output wire [7:0] uo_out,  // 8-bit output C
+    input  wire [7:0] uio_in,  // 8-bit input B
+    output wire [7:0] uio_out, // Unused, set to 0
+    output wire [7:0] uio_oe,  // Unused, set to 0
+    input  wire       ena,     // Enable
     input  wire       clk,     // Clock
     input  wire       rst_n    // Active-low reset
 );
@@ -28,6 +31,11 @@ module tt_um_project (
         end
     end
 
-    assign uo_out = C;
+    assign uo_out  = C;        // Priority Encoder Output
+    assign uio_out = 8'b00000000; // Not used, set to 0
+    assign uio_oe  = 8'b00000000; // Not used, set to 0
+
+    // List all unused inputs to prevent warnings
+    wire _unused = &{ena, clk, rst_n, 1'b0};
 
 endmodule
