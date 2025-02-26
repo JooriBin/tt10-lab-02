@@ -18,15 +18,17 @@ module tt_um_project (
     reg [7:0] C;
     reg [15:0] In;  // Combined input A & B
     integer i;
+    reg found; // Flag to stop checking after finding first '1'
 
     always @* begin
         In = {ui_in, uio_in};  // Merge A and B into a single 16-bit input
         C = 8'hF0; // Default case: No '1' found
+        found = 0; // Reset flag
 
         for (i = 15; i >= 0; i = i - 1) begin
-            if (In[i]) begin
+            if (In[i] && !found) begin
                 C = i; // Output first detected '1' bit position
-                break;
+                found = 1; // Set flag to prevent further changes
             end
         end
     end
