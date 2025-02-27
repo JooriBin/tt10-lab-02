@@ -15,11 +15,11 @@ from cocotb.triggers import ClockCycles
 async def test_project(dut):
     dut._log.info("Start")
 
-    # Set the clock period to 10 us (100 KHz)
+    #Set the clock period to 10 us (100 KHz)
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-dut._log. info("Resetting DUT'")
+dut._log.info("Resetting DUT'")
 dut.ena.value = 1
 dut.ui_in.value = 0
 dut.uio_in.value = 0
@@ -37,4 +37,4 @@ for i in range(16):
 		dut.ui_in.value=0 await
         ClockCycles(dut.clk, 1) 
 
-	expected_output = 14 - i if i ‹ 15 else 0b11110000 # Default case
+	expected_output = 14 - i if i < 15 else 0b11110000 # Default case
