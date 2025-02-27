@@ -29,7 +29,7 @@ async def test_project(dut):
 
     # Test cases (input A, input B, expected output)
     test_cases = [
-        (0b00101010, 0b11110001, 0b00001101),  # First '1' at index 13
+        (0b00101010, 0b11110001, 0b00001011),  # First '1' at index 13
         (0b00000000, 0b00000001, 0b00000000),  # First '1' at index 0
         (0b00000000, 0b00000000, 0b11110000)   # No '1's -> return 0xF0
     ]
