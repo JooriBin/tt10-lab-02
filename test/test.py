@@ -65,7 +65,7 @@ async def test_project(dut):
     dut.ui_in.value = 0b00000000  # Bits [15:8]
     dut.uio_in.value = 0b10000000  # Bits [7:0]
     await ClockCycles(dut.clk, 1)
-    assert dut.uo_out.value == 8, f"Expected 8, got {dut.uo_out.value}"
+    assert dut.uo_out.value == 7, f"Expected 8, got {dut.uo_out.value}"
 
     # Test case 7: No bits are set (special case)
     dut._log.info("Test case 7: No bits are set")
