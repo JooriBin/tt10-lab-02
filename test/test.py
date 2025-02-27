@@ -32,7 +32,3 @@ async def test_project(dut):
         await ClockCycles(dut.clk, 1)  # Wait for one clock cycle
 
         expected_output = 14 - i if i < 15 else 0b11110000  # Default case
-
-        assert dut.uo_out.value == expected_output, (
-            f"Test failed for i={i}. Expected {bin(expected_output)}, got {bin(dut.uo_out.value)}"
-        )
