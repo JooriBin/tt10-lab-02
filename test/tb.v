@@ -26,7 +26,7 @@ module tb ();
 `endif
 
   // Instantiate the Priority Encoder module
-  tt_um_project user_project (
+  tt_um_project uut (
 `ifdef GL_TEST
       .VPWR(VPWR),
       .VGND(VGND),
@@ -40,5 +40,21 @@ module tb ();
       .clk(clk),         // Clock
       .rst_n(rst_n)      // Active-low reset
   );
+
+  // Clock Generation
+  initial begin
+    clk = 0;
+    forever #5 clk = ~clk; // 10ns period -> 100MHz
+  end
+
+  // Reset Sequence
+  initial begin
+    ena = 1;
+    ui_in = 8'b00000000;
+    uio_in = 8'b00000000;
+    rst_n = 0;
+    #100; // Wait 100ns
+    rst_n = 1;
+  end
 
 endmodule
