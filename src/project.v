@@ -22,23 +22,23 @@ module tt_um_project (
 
     always @(*) begin
         if (ena) begin
-            if      (In[15]) C = 8'd15;
-            else if (In[14]) C = 8'd14;
-            else if (In[13]) C = 8'd13;
-            else if (In[12]) C = 8'd12;
-            else if (In[11]) C = 8'd11;
-            else if (In[10]) C = 8'd10;
-            else if (In[9])  C = 8'd9;
-            else if (In[8])  C = 8'd8;
-            else if (In[7])  C = 8'd7;
-            else if (In[6])  C = 8'd6;
-            else if (In[5])  C = 8'd5;
-            else if (In[4])  C = 8'd4;
-            else if (In[3])  C = 8'd3;
-            else if (In[2])  C = 8'd2;
-            else if (In[1])  C = 8'd1;
-            else if (In[0])  C = 8'd0;
-            else             C = 8'hF0; // Special case: No '1' found
+            if      (In[15]) C = 8'd00001111;
+            else if (In[14]) C = 8'00001110;
+            else if (In[13]) C = 8'd00001101;
+            else if (In[12]) C = 8'd00001100;
+            else if (In[11]) C = 8'd00001011;
+            else if (In[10]) C = 8'd00001010;
+            else if (In[9])  C = 8'd00001001;
+            else if (In[8])  C = 8'd00001000;
+            else if (In[7])  C = 8'd00000111;
+            else if (In[6])  C = 8'd00000110;
+            else if (In[5])  C = 8'd00000101;
+            else if (In[4])  C = 8'00000100;
+            else if (In[3])  C = 8'd00000011;
+            else if (In[2])  C = 8'd00000010;
+            else if (In[1])  C = 8'd00000001;
+            else if (In[0])  C = 8'd00000000;
+            else             C = 8'11110000; // Special case: No '1' found
         end
         else begin
             C = 8'bzzzzzzzz; // Disabled state
